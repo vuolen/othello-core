@@ -14,7 +14,7 @@ Each call to your bot has a *one second timeout*, failing to meet this limit aut
 Called at the start of the game, use this method to initialize your bot.
 
 ### int[] makeMove(int[][] board)
-Called each time it's your bot's turn to make a move. The possible values of the board are OthelloBot.EMPTY, OthelloBot.PLAYER, OthelloBot.OPPONENT.
+Called each time it's your bot's turn to make a move. The possible values of the board are `OthelloBot.EMPTY`, `OthelloBot.PLAYER`, `OthelloBot.OPPONENT`.
 The return value is simply a two-element array containing the indices of the tile where you want to position your next piece. Please note that returning a move that is not valid results in your bot being disqualified.
 
 ## Creating your own bot / workflow //TODO
