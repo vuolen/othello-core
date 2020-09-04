@@ -67,21 +67,25 @@ public class BoardTest {
     
     @Test
     public void openingMoveOnEdgeReturnsFalse() {
-        board.addMove(0, 0, WHITE);
         assertFalse(board.addMove(0, 0, WHITE));
     }
 
-    /*
+    
     @Test
     public void noNeighboringOpponentWontChangeBoard() {
         board.addMove(2, 5, WHITE);
         assertFalse(isBoardChanged(board, new Board()));
     }
+    
+    @Test
+    public void noNeighboringOpponentReturnsFalse() {
+        assertFalse(board.addMove(2, 5, WHITE));
+    }
 
     @Test
-    public void rightOpeningMove() {
-        assert (board.isMoveValid("d3", 1));
-    } */
+    public void rightOpeningMoveReturnsTrue() {
+        assertTrue(board.addMove(2, 3, WHITE));
+    }
 
     /* @Test
     public void moveAdding(){

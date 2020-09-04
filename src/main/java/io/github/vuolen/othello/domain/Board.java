@@ -58,6 +58,7 @@ public class Board {
     public boolean addMove(int row, int col, int color) {
         if (isMoveValid(row, col, color)) {
             this.board[row][col] = color;
+            return true;
         }
         
         return false;
