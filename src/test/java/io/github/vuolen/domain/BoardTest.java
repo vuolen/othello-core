@@ -86,6 +86,17 @@ public class BoardTest {
     public void rightOpeningMoveReturnsTrue() {
         assertTrue(board.addMove(3, 2, BLACK));
     }
+   
+    @Test
+    public void takenTileMoveReturnsFalse() {
+        board.addMove(3, 2, BLACK);
+        assertFalse(board.addMove(3, 2, BLACK));
+    }
+    
+    @Test
+    public void outOfBoundsMoveReturnsFalse() {
+        assertFalse(board.addMove(-1, -1, BLACK));
+    }
     
     /* @Test
     public void rightOpeningMoveChangesBoard() {

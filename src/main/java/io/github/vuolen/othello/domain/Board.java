@@ -69,6 +69,11 @@ public class Board {
     }
 
     private boolean isMoveValid(int x, int y, int color) {
+        if (!isMoveInBounds(x, y)
+                || this.getTile(x, y) != EMPTY) {
+            return false;
+        }
+        
         int opponent = color == WHITE ? BLACK : WHITE;
 
         //clockwise from top-left:
