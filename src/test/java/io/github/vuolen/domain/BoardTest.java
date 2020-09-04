@@ -1,5 +1,6 @@
 package io.github.vuolen.domain;
 
+import static io.github.vuolen.othello.api.Tile.*;
 import io.github.vuolen.othello.domain.Board;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -59,21 +60,42 @@ public class BoardTest {
         assertEquals(6, board.convertStringToCoordinates("a7")[0]);
         assertEquals(2, board.convertStringToCoordinates("c1")[1]);
     }
-
-    @Test
-    public void openingMoveOnEdgeWontValidate() {
-        assert (!board.isMoveValid("h8", 1));
+    
+    private boolean isBoardChanged(Board board1, Board board2) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (board1.getTile(row, col) != board2.getTile(row, col)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     @Test
-    public void noNeighboringOpponentWontValidate() {
-        assert (!board.isMoveValid("f3", 1));
+    public void openingMoveOnEdgeWontChangeBoard() {
+        board.addMove(0, 0, WHITE);
+        assertFalse(isBoardChanged(board, new Board()));
+    }
+    
+    @Test
+    public void openingMoveOnEdgeReturnsFalse() {
+        board.addMove(0, 0, WHITE);
+        assertFalse(board.addMove(0, 0, WHITE));
+    }
+
+    /*
+    @Test
+    public void noNeighboringOpponentWontChangeBoard() {
+        board.addMove(2, 5, WHITE);
+        assertFalse(isBoardChanged(board, new Board()));
     }
 
     @Test
     public void rightOpeningMove() {
         assert (board.isMoveValid("d3", 1));
-    }
+    } */
 
     /* @Test
     public void moveAdding(){

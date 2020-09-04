@@ -1,5 +1,6 @@
 package io.github.vuolen.othello.domain;
 
+import static io.github.vuolen.othello.api.Tile.*;
 import java.util.regex.*;
 
 /**
@@ -8,10 +9,6 @@ import java.util.regex.*;
  * @author riikoro
  */
 public class Board {
-
-    private final int EMPTY = 0;
-    private final int WHITE = 1;
-    private final int BLACK = 2;
 
     int[][] board;
 
@@ -66,37 +63,38 @@ public class Board {
         return b;
     }
 
-    public void addMove(int row, int col, int turn) {
-        this.board[row][col] = turn;
+    public boolean addMove(int row, int col, int color) {
+        if (isMoveValid(row, col, color)) {
+            this.board[row][col] = color;
+        }
+        
+        return false;
+    }
+    
+    public int getTile(int row, int col) {
+        return this.board[row][col];
     }
 
-    public boolean isMoveValid(String moveStr, int own) {
-        if (isMoveStringValid(moveStr)) {
-            int opponent = own == WHITE ? BLACK : WHITE;
+    private boolean isMoveValid(int row, int col, int color) {
+        int opponent = color == WHITE ? BLACK : WHITE;
 
-            //{rowindex, colindex}
-            int[] move = convertStringToCoordinates(moveStr);
-            int row = move[0];
-            int col = move[1];
+        //clockwise from top-left:
+        int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        for (int[] direction : directions) {
+            int nextrow = row + direction[0];
+            int nextcol = col + direction[1];
 
-            //clockwise from top-left:
-            int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
-            for (int[] direction : directions) {
-                int nextrow = row + direction[0];
-                int nextcol = col + direction[1];
-
-                if (isMoveInBounds(nextrow, nextcol)) {
-                    if (board[nextrow][nextcol] == opponent) {
-                        while (isMoveInBounds(nextrow, nextcol)) {
-                            nextrow = nextrow + direction[0];
-                            nextcol = nextcol + direction[1];
-                            if (board[nextrow][nextcol] == opponent) {
-                                continue;
-                            } else if (board[nextrow][nextcol] == own) {
-                                return true;
-                            } else {
-                                break;
-                            }
+            if (isMoveInBounds(nextrow, nextcol)) {
+                if (board[nextrow][nextcol] == opponent) {
+                    while (isMoveInBounds(nextrow, nextcol)) {
+                        nextrow = nextrow + direction[0];
+                        nextcol = nextcol + direction[1];
+                        if (board[nextrow][nextcol] == opponent) {
+                            continue;
+                        } else if (board[nextrow][nextcol] == color) {
+                            return true;
+                        } else {
+                            break;
                         }
                     }
                 }
