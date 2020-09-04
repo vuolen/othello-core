@@ -10,7 +10,7 @@ import java.util.regex.*;
  */
 public class Board {
 
-    int[][] board;
+    private int[][] board;
 
     public Board() {
         this.board = new int[8][8];
@@ -23,14 +23,6 @@ public class Board {
         board[3][4] = WHITE;
         board[4][3] = WHITE;
         board[4][4] = BLACK;
-    }
-
-    public Board(int[][] initialState) {
-        this.board = initialState;
-    }
-
-    public int[][] getBoard() {
-        return board;
     }
 
     /* String representation of board, white unicode U+25CF
@@ -108,18 +100,6 @@ public class Board {
             return true;
         }
         return false;
-    }
-
-    public boolean isMoveStringValid(String move) {
-        return Pattern.matches("[a-h]{1}[1-8]{1}", move);
-    }
-
-    public int[] convertStringToCoordinates(String moveStr) {
-        //a=10
-        int[] coordinates = new int[2];
-        coordinates[0] = Character.getNumericValue(moveStr.charAt(1)) - 1;
-        coordinates[1] = Character.getNumericValue(moveStr.charAt(0)) - 10;
-        return coordinates;
     }
 
 }

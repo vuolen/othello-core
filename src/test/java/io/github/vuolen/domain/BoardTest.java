@@ -35,9 +35,9 @@ public class BoardTest {
 
     @Test
     public void initialStateCorrect() {
-        assertEquals(board.getBoard()[2][3], 0);
-        assertEquals(board.getBoard()[3][3], 2);
-        assertEquals(board.getBoard()[4][3], 1);
+        assertEquals(board.getTile(2, 3), 0);
+        assertEquals(board.getTile(3, 3), 2);
+        assertEquals(board.getTile(4, 3), 1);
     }
 
     @Test
@@ -45,20 +45,6 @@ public class BoardTest {
         String[] rows = board.toString().split("\n");
         assertEquals("  a b c d e f g h", rows[0]);
         assertEquals("4| | | |●|○| | | |", rows[4]);
-    }
-
-    @Test
-    public void inputStringChecker() {
-        assert (!board.isMoveStringValid(":D"));
-        assert (!board.isMoveStringValid("dd22"));
-        assert (!board.isMoveStringValid("p9"));
-        assert (board.isMoveStringValid("h1"));
-    }
-
-    @Test
-    public void stringToCoordinateConversion() {
-        assertEquals(6, board.convertStringToCoordinates("a7")[0]);
-        assertEquals(2, board.convertStringToCoordinates("c1")[1]);
     }
     
     private boolean isBoardChanged(Board board1, Board board2) {
