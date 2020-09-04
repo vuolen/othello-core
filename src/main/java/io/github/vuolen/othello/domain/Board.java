@@ -68,8 +68,8 @@ public class Board {
         this.board[row][col] = turn;
     }
 
-    boolean checkMoveValid(String moveStr, int own) {
-        if(checkMoveString(moveStr)){
+    boolean isMoveValid(String moveStr, int own) {
+        if(isMoveStringValid(moveStr)){
             int opponent = own == 1 ? 2 : 1;
 
             //{rowindex, colindex}
@@ -82,9 +82,9 @@ public class Board {
             for(int i = 0; i < 8; i++){
                 int nextrow = row + directions[i][0];
                 int nextcol = col + directions[i][1];
-                if(withinBoard(nextrow, nextcol)){
+                if(isMoveInBounds(nextrow, nextcol)){
                     if(board[nextrow][nextcol] == opponent){
-                        while(withinBoard(nextrow, nextcol)){
+                        while(isMoveInBounds(nextrow, nextcol)){
                             nextrow = nextrow + directions[i][0];
                             nextcol = nextcol + directions[i][1];
                             if(board[nextrow][nextcol] == opponent){
@@ -102,14 +102,14 @@ public class Board {
         return false;
     }
     
-    private boolean withinBoard(int row, int col) {
+    private boolean isMoveInBounds(int row, int col) {
         if(row >= 0 && col >= 0 && row < board.length && col < board.length){
             return true;
         }
         return false;
     }
     
-    public boolean checkMoveString(String move){
+    public boolean isMoveStringValid(String move){
         return Pattern.matches("[a-h]{1}[1-8]{1}", move);
     }
 

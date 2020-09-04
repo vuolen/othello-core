@@ -59,10 +59,10 @@ public class BoardTest {
     
     @Test
     public void inputStringChecker(){
-        assert(!board.checkMoveString(":D"));
-        assert(!board.checkMoveString("dd22"));
-        assert(!board.checkMoveString("p9"));
-        assert(board.checkMoveString("h1"));
+        assert(!board.isMoveStringValid(":D"));
+        assert(!board.isMoveStringValid("dd22"));
+        assert(!board.isMoveStringValid("p9"));
+        assert(board.isMoveStringValid("h1"));
     }
     
     @Test
@@ -73,23 +73,23 @@ public class BoardTest {
     
     @Test
     public void openingMoveOnEdgeWontValidate(){
-        assert(!board.checkMoveValid("h8", 1));
+        assert(!board.isMoveValid("h8", 1));
     }
     
     @Test
     public void noNeighboringOpponentWontValidate(){
-        assert(!board.checkMoveValid("f3", 1));
+        assert(!board.isMoveValid("f3", 1));
     }
     
     @Test
     public void rightOpeningMove(){
-        assert(board.checkMoveValid("d3", 1));
+        assert(board.isMoveValid("d3", 1));
     }
     
     @Test
     public void noOwnDiscBehindOpponentWontValidate(){
         board.removeBottomLeftBlack();
-        assert(!board.checkMoveValid("d3", 1));
+        assert(!board.isMoveValid("d3", 1));
     }
     
     /* @Test

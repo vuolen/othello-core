@@ -21,7 +21,7 @@ public class Main {
             System.out.println("Turn: "+turnStr);
             System.out.print("Insert move (format: a1): ");
             String move = scanner.nextLine();
-            if(board.checkMoveValid(move, turnInt)){
+            if(board.isMoveValid(move, turnInt)){
                 System.out.println("cool is ok!!");
                 break;
             }else{
