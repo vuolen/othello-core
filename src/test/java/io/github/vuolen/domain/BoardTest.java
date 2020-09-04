@@ -35,16 +35,16 @@ public class BoardTest {
 
     @Test
     public void initialStateCorrect() {
-        assertEquals(board.getTile(2, 3), 0);
-        assertEquals(board.getTile(3, 3), 2);
-        assertEquals(board.getTile(4, 3), 1);
+        assertEquals(board.getTile(2, 3), EMPTY);
+        assertEquals(board.getTile(3, 3), WHITE);
+        assertEquals(board.getTile(4, 3), BLACK);
     }
 
     @Test
     public void toStringFormatting() {
         String[] rows = board.toString().split("\n");
         assertEquals("  a b c d e f g h", rows[0]);
-        assertEquals("4| | | |●|○| | | |", rows[4]);
+        assertEquals("4| | | |○|●| | | |", rows[4]);
     }
     
     private boolean isBoardChanged(Board board1, Board board2) {
@@ -84,7 +84,13 @@ public class BoardTest {
 
     @Test
     public void rightOpeningMoveReturnsTrue() {
-        assertTrue(board.addMove(2, 3, WHITE));
+        assertTrue(board.addMove(3, 2, BLACK));
+    }
+    
+    @Test
+    public void rightOpeningMoveChangesBoard() {
+        board.addMove(3, 2, BLACK);
+        assertEquals(board.getTile(3, 3), BLACK);
     }
 
     /* @Test

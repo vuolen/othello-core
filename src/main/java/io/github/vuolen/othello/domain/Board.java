@@ -19,10 +19,10 @@ public class Board {
                 board[i][j] = 0;
             }
         }
-        board[3][3] = BLACK;
-        board[3][4] = WHITE;
-        board[4][3] = WHITE;
-        board[4][4] = BLACK;
+        board[3][3] = WHITE;
+        board[3][4] = BLACK;
+        board[4][3] = BLACK;
+        board[4][4] = WHITE;
     }
 
     /* String representation of board, white unicode U+25CF
@@ -38,13 +38,13 @@ public class Board {
      */
     public String toString() {
         String b = "  a b c d e f g h\n";
-        for (int i = 0; i < board.length; i++) {
-            b += i + 1;
-            for (int j = 0; j < board[0].length; j++) {
+        for (int y = 0; y < board.length; y++) {
+            b += y + 1;
+            for (int x = 0; x < board[0].length; x++) {
                 b += "|";
-                if (board[i][j] == EMPTY) {
+                if (this.getTile(x, y) == EMPTY) {
                     b += " ";
-                } else if (board[i][j] == WHITE) {
+                } else if (this.getTile(x, y) == WHITE) {
                     b += "○";
                 } else {
                     b += "●";
@@ -55,36 +55,36 @@ public class Board {
         return b;
     }
 
-    public boolean addMove(int row, int col, int color) {
-        if (isMoveValid(row, col, color)) {
-            this.board[row][col] = color;
+    public boolean addMove(int x, int y, int color) {
+        if (isMoveValid(x, y, color)) {
+            this.board[x][y] = color;
             return true;
         }
         
         return false;
     }
     
-    public int getTile(int row, int col) {
-        return this.board[row][col];
+    public int getTile(int x, int y) {
+        return this.board[x][y];
     }
 
-    private boolean isMoveValid(int row, int col, int color) {
+    private boolean isMoveValid(int x, int y, int color) {
         int opponent = color == WHITE ? BLACK : WHITE;
 
         //clockwise from top-left:
         int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
         for (int[] direction : directions) {
-            int nextrow = row + direction[0];
-            int nextcol = col + direction[1];
-
-            if (isMoveInBounds(nextrow, nextcol)) {
-                if (board[nextrow][nextcol] == opponent) {
-                    while (isMoveInBounds(nextrow, nextcol)) {
-                        nextrow = nextrow + direction[0];
-                        nextcol = nextcol + direction[1];
-                        if (board[nextrow][nextcol] == opponent) {
+            int nextx = x + direction[0];
+            int nexty = y + direction[1];
+            
+            if (isMoveInBounds(nextx, nexty)) {
+                if (this.getTile(nextx, nexty) == opponent) {
+                    while (isMoveInBounds(nextx, nexty)) {
+                        nextx = nextx + direction[0];
+                        nexty = nexty + direction[1];
+                        if (this.getTile(nextx, nexty) == opponent) {
                             continue;
-                        } else if (board[nextrow][nextcol] == color) {
+                        } else if (this.getTile(nextx, nexty) == color) {
                             return true;
                         } else {
                             break;
