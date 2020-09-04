@@ -77,20 +77,19 @@ public class Board {
             int nextx = x + direction[0];
             int nexty = y + direction[1];
             
-            if (isMoveInBounds(nextx, nexty)) {
-                if (this.getTile(nextx, nexty) == opponent) {
-                    while (isMoveInBounds(nextx, nexty)) {
-                        nextx = nextx + direction[0];
-                        nexty = nexty + direction[1];
-                        if (this.getTile(nextx, nexty) == opponent) {
-                            continue;
-                        } else if (this.getTile(nextx, nexty) == color) {
-                            return true;
-                        } else {
-                            break;
-                        }
-                    }
-                }
+            if (!isMoveInBounds(nextx, nexty)
+                    || this.getTile(nextx, nexty) != opponent) {
+                continue;
+            }
+            
+            while (isMoveInBounds(nextx, nexty) 
+                    && this.getTile(nextx, nexty) == opponent) {
+                nextx += direction[0];
+                nexty += direction[1];
+            }
+            
+            if (this.getTile(nextx, nexty) == color) {
+                return true;
             }
         }
         return false;

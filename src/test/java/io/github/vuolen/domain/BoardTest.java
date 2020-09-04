@@ -87,11 +87,11 @@ public class BoardTest {
         assertTrue(board.addMove(3, 2, BLACK));
     }
     
-    @Test
+    /* @Test
     public void rightOpeningMoveChangesBoard() {
         board.addMove(3, 2, BLACK);
         assertEquals(board.getTile(3, 3), BLACK);
-    }
+    } */
 
     /* @Test
     public void moveAdding(){
