@@ -92,12 +92,12 @@ public class BoardTest {
         assert(!board.checkMoveValid("d3", 1));
     }
     
-    @Test
+    /* @Test
     public void moveAdding(){
         board.addMove(2, 3, 1);
         assertEquals(1, board.getBoard()[2][3]);
         assertEquals(1, board.getBoard()[3][3]);
-    }
+    } */
 }
 
 
