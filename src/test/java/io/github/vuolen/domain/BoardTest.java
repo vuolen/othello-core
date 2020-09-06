@@ -98,6 +98,15 @@ public class BoardTest {
         assertFalse(board.addMove(-1, -1, BLACK));
     }
     
+    @Test
+    public void simpleMoveIsGameOverDoesNotReturnError() {
+        // This produced an ArrayIndexOutOfBounds error
+        board.addMove(3, 2, BLACK);
+        board.addMove(3, 1, WHITE);
+        board.addMove(3, 0, BLACK);
+        assertFalse(board.isGameOver());
+    }
+    
     /* @Test
     public void rightOpeningMoveChangesBoard() {
         board.addMove(3, 2, BLACK);

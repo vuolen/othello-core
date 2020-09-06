@@ -107,6 +107,10 @@ public class Board {
                 nextx += direction[0];
                 nexty += direction[1];
             }
+            
+            if (!isMoveInBounds(nextx, nexty)) {
+                continue;
+            }
 
             if (this.getTile(nextx, nexty) == color) {
                 return true;
