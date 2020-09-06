@@ -65,7 +65,7 @@ public class Board {
         }
         if (blackScore > whiteScore) {
             return BLACK;
-        } else if (whiteScore < blackScore) {
+        } else if (whiteScore > blackScore) {
             return WHITE;
         } else {
             return EMPTY;
