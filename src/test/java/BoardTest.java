@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 
+import domain.Board;
 import org.junit.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
@@ -17,17 +16,6 @@ public class BoardTest {
     
     private Board board;
     
-    public BoardTest() {
-    }
-    
-    /*@BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    */
     @Before
     public void setUp() {
         this.board = new Board();
@@ -36,12 +24,6 @@ public class BoardTest {
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    @Test
-    public void hello() {}
     
     @Test
     public void initialStateCorrect(){
@@ -56,49 +38,101 @@ public class BoardTest {
         assertEquals("  a b c d e f g h", rows[0]);
         assertEquals("4| | | |●|○| | | |", rows[4]);           
     }
-    
-    @Test
-    public void inputStringChecker(){
-        assert(!board.checkMoveString(":D"));
-        assert(!board.checkMoveString("dd22"));
-        assert(!board.checkMoveString("p9"));
-        assert(board.checkMoveString("h1"));
-    }
-    
-    @Test
-    public void stringToCoordinateConversion(){
-        assertEquals(6, board.convertStringToCoordinates("a7")[0]);
-        assertEquals(2, board.convertStringToCoordinates("c1")[1]);
-    }
-    
+     
     @Test
     public void openingMoveOnEdgeWontValidate(){
-        assert(!board.checkMoveValid("h8", 1));
+        assert(!board.checkMoveValid(7, 7, 1));
     }
     
     @Test
     public void noNeighboringOpponentWontValidate(){
-        assert(!board.checkMoveValid("f3", 1));
+        assert(!board.checkMoveValid(2, 5, 1));
     }
     
     @Test
     public void rightOpeningMove(){
-        assert(board.checkMoveValid("d3", 1));
+        assert(board.checkMoveValid(2, 3, 1));
     }
     
     @Test
     public void noOwnDiscBehindOpponentWontValidate(){
-        board.removeBottomLeftBlack();
-        assert(!board.checkMoveValid("d3", 1));
+        board.editBoard(4,3,0);
+        assert(!board.checkMoveValid(2, 3, 1));
     }
     
     @Test
-    public void moveAdding(){
+    public void moveAddingOneDiscFlips(){
         board.addMove(2, 3, 1);
         assertEquals(1, board.getBoard()[2][3]);
         assertEquals(1, board.getBoard()[3][3]);
     }
+    
+    @Test
+    public void differentBoardObjectsWithSameBoardEqual(){
+        Board otherBoard = new Board();
+        assert(otherBoard.equals(board));
+    }
+    
+    @Test
+    public void boardsWithDifferentBoardArraysDontEqual(){
+        Board otherBoard = new Board();
+        otherBoard.editBoard(4, 3, 5);
+        assert(!otherBoard.equals(board));
+    }
+    
+    @Test
+    public void moveAddingMultipleDiscsInRowFlip(){
+        int[][] init = {
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,2,0,0,0},
+            {0,0,0,1,2,0,0,0},
+            {0,0,0,2,2,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,0,0,0,0,0}
+        };
+        Board initialBoard = new Board(init);
+        initialBoard.addMove(2, 4, 1);
+        
+        int[][] expected = {
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,1,1,0,0,0},
+            {0,0,0,2,1,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,0,0,0,0,0}};
+        Board expectedBoard = new Board(expected);    
+        assert(initialBoard.equals(expectedBoard));
 }
-
-
-
+    
+    @Test
+    public void moveAddingDiscsFlipInMultipleDirections(){
+        int[][] init = {{0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0},
+            {0,0,2,0,2,0,0,0},
+            {0,0,0,1,1,0,0,0},
+            {0,0,0,0,0,1,1,2},
+            {0,0,0,2,1,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,0,0,0,0,0}
+        };
+        Board initialBoard = new Board(init);
+        initialBoard.addMove(4, 4, 2);
+        
+        int[][] expected = {
+            {0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0},
+            {0,0,2,0,2,0,0,0},
+            {0,0,0,2,2,0,0,0},
+            {0,0,0,0,2,2,2,2},
+            {0,0,0,2,1,0,0,0},
+            {0,0,0,0,1,0,0,0},
+            {0,0,0,0,0,0,0,0}
+        };
+        Board expectedBoard = new Board(expected);
+        assert(initialBoard.equals(expectedBoard));
+    }
+}

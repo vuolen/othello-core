@@ -1,1 +1,4 @@
+Main.class
 io/github/vuolen/App.class
+ui/Ui.class
+domain/Board.class
