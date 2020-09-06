@@ -48,8 +48,8 @@ public class BoardTest {
     }
     
     private boolean isBoardChanged(Board board1, Board board2) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < Board.SIZE; row++) {
+            for (int col = 0; col < Board.SIZE; col++) {
                 if (board1.getTile(row, col) != board2.getTile(row, col)) {
                     return true;
                 }
