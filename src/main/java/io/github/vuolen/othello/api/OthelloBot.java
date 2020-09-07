@@ -6,7 +6,7 @@ public interface OthelloBot {
     public final int PLAYER = 1;
     public final int OPPONENT = 2;
 
-    void startGame();
+    void startGame(int color);
 
-    int[] makeMove(int[][] board);
+    int[] makeMove(BoardAPI board);
 }

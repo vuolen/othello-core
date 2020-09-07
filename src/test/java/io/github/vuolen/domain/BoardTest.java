@@ -40,12 +40,6 @@ public class BoardTest {
         assertEquals(board.getTile(4, 3), BLACK);
     }
 
-    @Test
-    public void toStringFormatting() {
-        String[] rows = board.toString().split("\n");
-        assertEquals("  a b c d e f g h", rows[0]);
-        assertEquals("4| | | |○|●| | | |", rows[4]);
-    }
     
     private boolean isBoardChanged(Board board1, Board board2) {
         for (int row = 0; row < Board.SIZE; row++) {

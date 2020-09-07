@@ -1,14 +1,14 @@
 package io.github.vuolen.othello.domain;
 
+import io.github.vuolen.othello.api.BoardAPI;
 import static io.github.vuolen.othello.api.Tile.*;
 import java.util.Arrays;
-import java.util.regex.*;
 
 /**
  *
  * @author riikoro
  */
-public class Board {
+public class Board implements BoardAPI {
     
     public static final int SIZE = 8;
 
@@ -126,37 +126,6 @@ public class Board {
         return false;
     }
 
-    /* String representation of board, white unicode U+25CF
-        a b c d e f g h 
-      1| | | | | | | | |
-      2| | | | | | | | |
-      3| | | | | | | | |
-      4| | | |●|○| | | |
-      5| | | |○|●| | | |
-      6| | | | | | | | |
-      7| | | | | | | | |
-      8| | | | | | | | |
-     */
-    @Override
-    public String toString() {
-        String b = "  a b c d e f g h\n";
-        for (int y = 0; y < SIZE; y++) {
-            b += y + 1;
-            for (int x = 0; x < SIZE; x++) {
-                b += "|";
-                if (this.getTile(x, y) == EMPTY) {
-                    b += " ";
-                } else if (this.getTile(x, y) == WHITE) {
-                    b += "○";
-                } else {
-                    b += "●";
-                }
-            }
-            b += "|\n";
-        }
-        return b;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -173,6 +142,11 @@ public class Board {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int size() {
+        return SIZE;
     }
 
 }
