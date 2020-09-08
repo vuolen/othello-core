@@ -31,7 +31,7 @@ public class UI {
         while (!board.isGameOver()) {
             System.out.println("-------------------------------");
             System.out.println(boardToString(board));
-            System.out.println("turn: " + playerToString(colors[turn]));
+            System.out.println("turn: " + colorToMark(colors[turn]));
             if (board.hasValidMovesLeft(turn)) {
                 int[] move = contestants[turn].makeMove(board);
                 if (!board.addMove(move[0], move[1], colors[turn])) {
@@ -70,10 +70,8 @@ public class UI {
                 b += "|";
                 if (board.getTile(x, y) == EMPTY) {
                     b += " ";
-                } else if (board.getTile(x, y) == BLACK) {
-                    b += "●";
                 } else {
-                    b += "○";
+                    b += colorToMark(board.getTile(x, y));
                 }
             }
             b += "|\n";
@@ -81,11 +79,11 @@ public class UI {
         return b;
     }
 
-    private static String playerToString(int player) {
-        if (player == BLACK) {
-            return "BLACK";
+    private static String colorToMark(int color) {
+        if (color == BLACK) {
+            return "#";
         } else {
-            return "WHITE";
+            return "○";
         }
     }
 }
