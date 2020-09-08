@@ -15,6 +15,27 @@ public class BoardTest {
 
     public BoardTest() {
     }
+    
+    /*
+    for debug
+    public String boardToString(int[][] boardToPrint) {
+        String b = "  a b c d e f g h\n";
+        for (int i = 0; i < boardToPrint.length; i++) {
+            b += i + 1;
+            for (int j = 0; j < boardToPrint[0].length; j++) {
+                b += "|";
+                if (boardToPrint[i][j] == 0) {
+                    b += " ";
+                } else if (boardToPrint[i][j] == 1) {
+                    b += "○";
+                } else {
+                    b += "●";
+                }
+            }
+            b += "|\n";
+        }
+        return b;
+    }
 
     /*@BeforeAll
     public static void setUpClass() {
@@ -48,8 +69,7 @@ public class BoardTest {
                     return true;
                 }
             }
-        }
-        
+        }  
         return false;
     }
 
@@ -93,6 +113,35 @@ public class BoardTest {
     }
     
     @Test
+    public void addingMoveFlipsCorrectPieces(){
+        int[][] initial = {
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 1, 0},
+            {0, 0, 0, 2, 0, 2, 0, 0},
+            {0, 0, 0, 2, 2, 0, 0, 0},
+            {0, 0, 1, 0, 2, 2, 1, 0},
+            {0, 0, 2, 2, 0, 2, 0, 0},
+            {0, 0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
+        };
+        this.board = new Board(initial);
+        board.addMove(4, 3, BLACK);
+        
+        int[][] expected = {
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 1, 0},
+            {0, 0, 0, 1, 0, 1, 0, 0},
+            {0, 0, 0, 1, 1, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 0},
+            {0, 0, 2, 2, 0, 2, 0, 0},
+            {0, 0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
+        };
+        Board expectedBoard = new Board(expected);
+        assert(board.equals(expectedBoard));
+    }
+    
+    @Test
     public void simpleMoveIsGameOverDoesNotReturnError() {
         // This produced an ArrayIndexOutOfBounds error
         board.addMove(3, 2, BLACK);
@@ -101,7 +150,22 @@ public class BoardTest {
         assertFalse(board.isGameOver());
     }
     
-    /* @Test
+    @Test
+    public void onePossibleMoveLeftGameNotOver() {
+        
+    }
+    
+    @Test
+    public void noPossibleMovesGameOver() {
+        
+    }
+    
+    @Test
+    public void theOneWithMorePiecesAtEndOfGameWins(){
+        
+    }
+    
+    /*@Test
     public void rightOpeningMoveChangesBoard() {
         board.addMove(3, 2, BLACK);
         assertEquals(board.getTile(3, 3), BLACK);

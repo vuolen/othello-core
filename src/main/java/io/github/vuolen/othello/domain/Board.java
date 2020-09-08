@@ -11,6 +11,7 @@ import java.util.Arrays;
 public class Board implements BoardAPI {
     
     public static final int SIZE = 8;
+    public static final int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     private int[][] board;
 
@@ -26,10 +27,41 @@ public class Board implements BoardAPI {
         board[4][3] = BLACK;
         board[4][4] = WHITE;
     }
+    
+    //for tests
+    public Board(int[][] initialBoard){
+        this.board = initialBoard;
+    }
 
     public boolean addMove(int x, int y, int color) {
         if (isMoveValid(x, y, color)) {
             this.board[x][y] = color;
+            int opponent = color == WHITE ? BLACK : WHITE;
+          
+            //flip pieces surrounded by opponent
+            for (int i = 0; i < directions.length; i++) {
+            int nextx = x + directions[i][0];
+            int nexty = y + directions[i][1];
+
+            if (isMoveInBounds(nextx, nexty) && board[nextx][nexty] == opponent) {
+                while (isMoveInBounds(nextx, nexty) && board[nextx][nexty] == opponent) {
+                    nextx = nextx + directions[i][0];
+                    nexty = nexty + directions[i][1];
+                }
+
+                if (!isMoveInBounds(nextx, nexty)) {
+                    continue;
+                }
+
+                if (board[nextx][nexty] == color) {
+                    while (nextx != x || nexty != y) {
+                        nextx = nextx - directions[i][0];
+                        nexty = nexty - directions[i][1];
+                        board[nextx][nexty] = color;
+                    }
+                }
+            }
+        }
             return true;
         }
 
@@ -92,7 +124,6 @@ public class Board implements BoardAPI {
         int opponent = color == WHITE ? BLACK : WHITE;
 
         //clockwise from top-left:
-        int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
         for (int[] direction : directions) {
             int nextx = x + direction[0];
             int nexty = y + direction[1];

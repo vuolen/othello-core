@@ -18,7 +18,7 @@ import static io.github.vuolen.othello.domain.Board.SIZE;
  * @author riikoro
  */
 public class UI {
-    
+
     public static void battle(OthelloBot bot1, OthelloBot bot2) {
         Board board = new Board();
         int turn = 0;
@@ -26,27 +26,32 @@ public class UI {
         int[] colors = new int[]{BLACK, WHITE};
         bot1.startGame(colors[0]);
         bot2.startGame(colors[1]);
-                
+
         System.out.println("GAME STARTED");
         while (!board.isGameOver()) {
             System.out.println("-------------------------------");
             System.out.println(boardToString(board));
-            System.out.println("turn: "+ playerToString(colors[turn]));
-            int[] move = contestants[turn].makeMove(board);
-            if (!board.addMove(move[0], move[1], colors[turn])) {
-                System.out.println("INVALID MOVE - DISQUALIFIED");
-                break;
+            System.out.println("turn: " + playerToString(colors[turn]));
+            if (board.hasValidMovesLeft(turn)) {
+                int[] move = contestants[turn].makeMove(board);
+
+                if (!board.addMove(move[0], move[1], colors[turn])) {
+                    System.out.println("INVALID MOVE - DISQUALIFIED");
+                    break;
+                }
+            } else {
+                System.out.println("No possible moves");
             }
-            
+
             int opponent = turn == 0 ? 1 : 0;
             if (board.hasValidMovesLeft(colors[opponent])) {
                 turn = opponent;
             }
         }
         System.out.println("GAME OVER");
-        
+
     }
-    
+
     /* String representation of board, white unicode U+25CF
         a b c d e f g h 
       1| | | | | | | | |
@@ -76,7 +81,7 @@ public class UI {
         }
         return b;
     }
-    
+
     private static String playerToString(int player) {
         if (player == BLACK) {
             return "BLACK";
