@@ -44,6 +44,7 @@ public class UI {
             }
         }
         System.out.println("GAME OVER");
+        
     }
     
     /* String representation of board, white unicode U+25CF
@@ -66,9 +67,9 @@ public class UI {
                 if (board.getTile(x, y) == EMPTY) {
                     b += " ";
                 } else if (board.getTile(x, y) == WHITE) {
-                    b += "○";
-                } else {
                     b += "●";
+                } else {
+                    b += "○";
                 }
             }
             b += "|\n";
