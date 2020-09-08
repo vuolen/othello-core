@@ -13,15 +13,13 @@ import java.util.regex.Pattern;
 public class OthelloHuman implements OthelloBot {
 
     Scanner scanner;
-    
+
     public OthelloHuman() {
         scanner = new Scanner(System.in);
     }
-    
+
     @Override
     public void startGame(int color) {
-        //System.out.println("GAME STARTED");
-        //System.out.println("YOUR COLOR IS " + playerToString(color));
     }
 
     @Override
@@ -30,7 +28,6 @@ public class OthelloHuman implements OthelloBot {
             System.out.println("Insert move (format: a1): ");
             String move = scanner.nextLine();
             if (isInputFormatValid(move)) {
-                int x, y;
                 int[] coordinates = parseInputToCoordinates(move);
                 return coordinates;
             } else {
@@ -38,8 +35,6 @@ public class OthelloHuman implements OthelloBot {
             }
         }
     }
-    
-    
 
     private static boolean isInputFormatValid(String input) {
         return Pattern.matches("[a-h]{1}[1-8]{1}", input);
