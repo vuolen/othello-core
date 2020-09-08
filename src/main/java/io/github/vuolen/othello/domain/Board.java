@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author riikoro
  */
 public class Board implements BoardAPI {
-    
+
     public static final int SIZE = 8;
     public static final int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
@@ -27,41 +27,41 @@ public class Board implements BoardAPI {
         board[4][3] = BLACK;
         board[4][4] = WHITE;
     }
-    
+
     //for tests
-    public Board(int[][] initialBoard){
+    public Board(int[][] initialBoard) {
         this.board = initialBoard;
     }
 
     public boolean addMove(int x, int y, int color) {
         if (isMoveValid(x, y, color)) {
-            this.board[x][y] = color;
+            this.setTile(x, y, color);
             int opponent = color == WHITE ? BLACK : WHITE;
-          
+
             //flip pieces surrounded by opponent
-            for (int i = 0; i < directions.length; i++) {
-            int nextx = x + directions[i][0];
-            int nexty = y + directions[i][1];
+            for (int[] direction : directions) {
+                int nextx = x + direction[0];
+                int nexty = y + direction[1];
 
-            if (isMoveInBounds(nextx, nexty) && board[nextx][nexty] == opponent) {
-                while (isMoveInBounds(nextx, nexty) && board[nextx][nexty] == opponent) {
-                    nextx = nextx + directions[i][0];
-                    nexty = nexty + directions[i][1];
-                }
+                if (isMoveInBounds(nextx, nexty) && this.getTile(nextx, nexty) == opponent) {
+                    while (isMoveInBounds(nextx, nexty) && this.getTile(nextx, nexty) == opponent) {
+                        nextx = nextx + direction[0];
+                        nexty = nexty + direction[1];
+                    }
 
-                if (!isMoveInBounds(nextx, nexty)) {
-                    continue;
-                }
+                    if (!isMoveInBounds(nextx, nexty)) {
+                        continue;
+                    }
 
-                if (board[nextx][nexty] == color) {
-                    while (nextx != x || nexty != y) {
-                        nextx = nextx - directions[i][0];
-                        nexty = nexty - directions[i][1];
-                        board[nextx][nexty] = color;
+                    if (this.getTile(nextx, nexty) == color) {
+                        while (nextx != x || nexty != y) {
+                            nextx = nextx - direction[0];
+                            nexty = nexty - direction[1];
+                            this.setTile(nextx, nexty, color);
+                        }
                     }
                 }
             }
-        }
             return true;
         }
 
@@ -70,6 +70,10 @@ public class Board implements BoardAPI {
 
     public int getTile(int x, int y) {
         return this.board[x][y];
+    }
+    
+    private void setTile(int x, int y, int value) {
+        this.board[x][y] = value;
     }
 
     public boolean isGameOver() {
@@ -103,7 +107,7 @@ public class Board implements BoardAPI {
             return EMPTY;
         }
     }
-    
+
     public boolean hasValidMovesLeft(int player) {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -138,7 +142,7 @@ public class Board implements BoardAPI {
                 nextx += direction[0];
                 nexty += direction[1];
             }
-            
+
             if (!isMoveInBounds(nextx, nexty)) {
                 continue;
             }
