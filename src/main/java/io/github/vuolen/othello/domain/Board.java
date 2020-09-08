@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class Board implements BoardAPI {
 
     public static final int SIZE = 8;
-    public static final int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    public static final int[][] DIRECTIONS = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     private int[][] board;
 
@@ -39,7 +39,7 @@ public class Board implements BoardAPI {
             int opponent = color == WHITE ? BLACK : WHITE;
 
             //flip pieces surrounded by opponent
-            for (int[] direction : directions) {
+            for (int[] direction : DIRECTIONS) {
                 int nextx = x + direction[0];
                 int nexty = y + direction[1];
 
@@ -129,7 +129,7 @@ public class Board implements BoardAPI {
         int opponent = color == WHITE ? BLACK : WHITE;
 
         //clockwise from top-left:
-        for (int[] direction : directions) {
+        for (int[] direction : DIRECTIONS) {
             int nextx = x + direction[0];
             int nexty = y + direction[1];
 
