@@ -68,6 +68,7 @@ public class Board implements BoardAPI {
         return false;
     }
 
+    @Override
     public int getTile(int x, int y) {
         return this.board[x][y];
     }
