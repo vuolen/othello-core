@@ -34,7 +34,6 @@ public class UI {
             System.out.println("turn: " + playerToString(colors[turn]));
             if (board.hasValidMovesLeft(turn)) {
                 int[] move = contestants[turn].makeMove(board);
-
                 if (!board.addMove(move[0], move[1], colors[turn])) {
                     System.out.println("INVALID MOVE - DISQUALIFIED");
                     break;
@@ -71,7 +70,7 @@ public class UI {
                 b += "|";
                 if (board.getTile(x, y) == EMPTY) {
                     b += " ";
-                } else if (board.getTile(x, y) == WHITE) {
+                } else if (board.getTile(x, y) == BLACK) {
                     b += "●";
                 } else {
                     b += "○";

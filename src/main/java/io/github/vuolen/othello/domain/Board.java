@@ -19,13 +19,13 @@ public class Board implements BoardAPI {
         this.board = new int[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                board[i][j] = 0;
+                this.setTile(i, j, EMPTY);
             }
         }
-        board[3][3] = WHITE;
-        board[3][4] = BLACK;
-        board[4][3] = BLACK;
-        board[4][4] = WHITE;
+        this.setTile(3, 3, WHITE);
+        this.setTile(4, 3, BLACK);
+        this.setTile(3, 4, BLACK);
+        this.setTile(4, 4, WHITE);
     }
 
     //for tests
@@ -132,12 +132,12 @@ public class Board implements BoardAPI {
         for (int[] direction : DIRECTIONS) {
             int nextx = x + direction[0];
             int nexty = y + direction[1];
-
+            
             if (!isMoveInBounds(nextx, nexty)
                     || this.getTile(nextx, nexty) != opponent) {
                 continue;
             }
-
+            
             while (isMoveInBounds(nextx, nexty)
                     && this.getTile(nextx, nexty) == opponent) {
                 nextx += direction[0];
