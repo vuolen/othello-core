@@ -161,6 +161,24 @@ public class BoardTest {
     }
     
     @Test
+    public void onlyOnePlayerHasMovesLeftHasMoveLeftRecognizes(){
+        //bug case from before, problem in ui
+        int[][] initial = {
+            {2, 2, 2, 0, 0, 0, 0, 0},
+            {2, 2, 1, 0, 0, 0, 0, 0},
+            {2, 1, 1, 1, 0, 0, 0, 0},
+            {2, 1, 1, 1, 1, 0, 0, 0},
+            {2, 0, 0, 1, 1, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
+        };
+        Board initialBoard = new Board(initial);
+        assert(initialBoard.hasValidMovesLeft(WHITE));
+        assert(!initialBoard.hasValidMovesLeft(BLACK));
+    }
+    
+    @Test
     public void theOneWithMorePiecesAtEndOfGameWins(){
         
     }

@@ -1,13 +1,7 @@
 
 import io.github.vuolen.othello.api.OthelloBot;
-import static io.github.vuolen.othello.api.Tile.BLACK;
-import static io.github.vuolen.othello.api.Tile.WHITE;
-import io.github.vuolen.othello.domain.Board;
 import io.github.vuolen.othello.bots.OthelloHuman;
 import io.github.vuolen.othello.ui.UI;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +13,6 @@ public class Main {
     public static void main(String[] args){
         if (args.length == 0) {
             UI.battle(new OthelloHuman(), new OthelloHuman());
-            //System.out.println("USAGE: java -jar pathto.jar BotClass1 [BotClass2]");
         } else if (args.length == 1) {
             try {
                 Class botClass = Class.forName("io.github.vuolen.othello.bots." + args[0]);
@@ -36,6 +29,29 @@ public class Main {
             } catch (ClassNotFoundException ex) {
                 System.out.println("Invalid class name " + args[0]);
             }
+        } else if (args.length == 2){
+            try {
+                //should have better exception handling?
+                Class botClass1 = Class.forName("io.github.vuolen.othello.bots." + args[0]);
+                OthelloBot bot1;
+                
+                Class botClass2 = Class.forName("io.github.vuolen.othello.bots." + args[0]);
+                OthelloBot bot2;
+                try {
+                    bot1 = (OthelloBot) botClass1.getDeclaredConstructor().newInstance();
+                    bot2 = (OthelloBot) botClass2.getDeclaredConstructor().newInstance();
+
+                    UI.battle(bot1, bot2);
+                } catch (Exception ex){
+                    System.out.println("Error instantiating classes: ");
+                    ex.printStackTrace();
+                }
+            } catch(ClassNotFoundException ex) {
+                System.out.println("Could not instantiate classes");
+                ex.printStackTrace();
+            }
+        } else {
+            System.out.println("Too many arguments; USAGE: java -jar pathto.jar BotClass1 [BotClass2]");
         }
     }   
 }

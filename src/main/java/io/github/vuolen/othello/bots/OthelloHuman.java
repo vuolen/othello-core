@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  */
 public class OthelloHuman implements OthelloBot {
 
+    public final boolean isHuman = true;
     Scanner scanner;
 
     public OthelloHuman() {
@@ -46,5 +47,9 @@ public class OthelloHuman implements OthelloBot {
         coordinates[0] = Character.getNumericValue(input.charAt(0)) - 10;
         coordinates[1] = Character.getNumericValue(input.charAt(1)) - 1;
         return coordinates;
+    }
+    
+    public boolean isHuman(){
+        return isHuman;
     }
 }

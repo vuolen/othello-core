@@ -13,6 +13,7 @@ import static io.github.vuolen.othello.api.Tile.WHITE;
 public class SimpleBot implements OthelloBot {
 
     private int color;
+    public final boolean isHuman = false;
     
     @Override
     public void startGame(int color) {
@@ -77,4 +78,7 @@ public class SimpleBot implements OthelloBot {
         return false;
     }
     
+     public boolean isHuman(){
+        return isHuman;
+    }
 }

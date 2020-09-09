@@ -72,21 +72,16 @@ public class Board implements BoardAPI {
     public int getTile(int x, int y) {
         return this.board[x][y];
     }
-    
+
     private void setTile(int x, int y, int value) {
         this.board[x][y] = value;
     }
 
     public boolean isGameOver() {
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                if (isMoveValid(x, y, BLACK)
-                        || isMoveValid(x, y, WHITE)) {
-                    return false;
-                }
-            }
+        if(!hasValidMovesLeft(BLACK)&&!hasValidMovesLeft(WHITE)){
+            return true;
         }
-        return true;
+        return false;
     }
 
     public int winner() {
@@ -132,12 +127,12 @@ public class Board implements BoardAPI {
         for (int[] direction : DIRECTIONS) {
             int nextx = x + direction[0];
             int nexty = y + direction[1];
-            
+
             if (!isMoveInBounds(nextx, nexty)
                     || this.getTile(nextx, nexty) != opponent) {
                 continue;
             }
-            
+
             while (isMoveInBounds(nextx, nexty)
                     && this.getTile(nextx, nexty) == opponent) {
                 nextx += direction[0];
