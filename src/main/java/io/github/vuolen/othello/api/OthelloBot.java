@@ -8,7 +8,7 @@ public interface OthelloBot {
 
     void startGame(int color);
 
-    int[] makeMove(BoardAPI board);
+    int[] makeMove(int[][] board);
     
     boolean isHuman();
 }

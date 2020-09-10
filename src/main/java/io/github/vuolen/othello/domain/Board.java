@@ -1,6 +1,5 @@
 package io.github.vuolen.othello.domain;
 
-import io.github.vuolen.othello.api.BoardAPI;
 import static io.github.vuolen.othello.api.Tile.*;
 import java.util.Arrays;
 
@@ -8,7 +7,7 @@ import java.util.Arrays;
  *
  * @author riikoro
  */
-public class Board implements BoardAPI {
+public class Board {
 
     public static final int SIZE = 8;
     public static final int[][] DIRECTIONS = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
@@ -68,7 +67,6 @@ public class Board implements BoardAPI {
         return false;
     }
 
-    @Override
     public int getTile(int x, int y) {
         return this.board[x][y];
     }
@@ -175,9 +173,19 @@ public class Board implements BoardAPI {
         return true;
     }
 
-    @Override
     public int size() {
         return SIZE;
     }
 
+    public int[][] getAsArray() {
+        int[][] copyOfBoard = new int[SIZE][SIZE];
+        
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                copyOfBoard[i][j] = this.board[i][j];
+            }
+        }
+        
+        return copyOfBoard;
+    }
 }

@@ -47,7 +47,6 @@ public class Main {
                     ex.printStackTrace();
                 }
             } catch(ClassNotFoundException ex) {
-                System.out.println("Could not instantiate classes");
                 ex.printStackTrace();
             }
         } else {

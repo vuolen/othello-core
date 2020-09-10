@@ -1,6 +1,5 @@
 package io.github.vuolen.othello.bots;
 
-import io.github.vuolen.othello.api.BoardAPI;
 import io.github.vuolen.othello.api.OthelloBot;
 import static io.github.vuolen.othello.api.Tile.BLACK;
 import static io.github.vuolen.othello.api.Tile.EMPTY;
@@ -21,9 +20,9 @@ public class SimpleBot implements OthelloBot {
     }
 
     @Override
-    public int[] makeMove(BoardAPI board) {
-        for (int x = 0; x < board.size(); x++) {
-            for (int y = 0; y < board.size(); y++) {
+    public int[] makeMove(int[][] board) {
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board.length; y++) {
                 if (isMoveValid(x, y, board)) {
                     return new int[]{x, y};
                 }
@@ -35,9 +34,9 @@ public class SimpleBot implements OthelloBot {
     // The following two methods are basically ripped from the Board implementation.
     // However the bot you create is expected to provide these kind of methods for yourself.
     
-    private boolean isMoveValid(int x, int y, BoardAPI board) {
+    private boolean isMoveValid(int x, int y, int[][] board) {
         if (!isMoveInBounds(x, y, board)
-                || board.getTile(x, y) != EMPTY) {
+                || board[x][y] != EMPTY) {
             return false;
         }
 
@@ -50,12 +49,12 @@ public class SimpleBot implements OthelloBot {
             int nexty = y + direction[1];
 
             if (!isMoveInBounds(nextx, nexty, board)
-                    || board.getTile(nextx, nexty) != opponent) {
+                    || board[nextx][nexty] != opponent) {
                 continue;
             }
 
             while (isMoveInBounds(nextx, nexty, board)
-                    && board.getTile(nextx, nexty) == opponent) {
+                    && board[nextx][nexty] == opponent) {
                 nextx += direction[0];
                 nexty += direction[1];
             }
@@ -64,15 +63,15 @@ public class SimpleBot implements OthelloBot {
                 continue;
             }
 
-            if (board.getTile(nextx, nexty) == this.color) {
+            if (board[nextx][nexty] == this.color) {
                 return true;
             }
         }
         return false;
     }
 
-     private boolean isMoveInBounds(int x, int y, BoardAPI board) {
-        if (x >= 0 && y >= 0 && x < board.size() && y < board.size()) {
+     private boolean isMoveInBounds(int x, int y, int[][] board) {
+        if (x >= 0 && y >= 0 && x < board.length && y < board.length) {
             return true;
         }
         return false;

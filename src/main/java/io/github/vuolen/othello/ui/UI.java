@@ -5,7 +5,6 @@
  */
 package io.github.vuolen.othello.ui;
 
-import io.github.vuolen.othello.api.BoardAPI;
 import io.github.vuolen.othello.api.OthelloBot;
 import static io.github.vuolen.othello.api.OthelloBot.EMPTY;
 import static io.github.vuolen.othello.api.Tile.BLACK;
@@ -32,8 +31,9 @@ public class UI {
         line w hasValidMovesLeft called with param 0 for black, 1 for white,
         ui turns changed to 1/2 like in board to avoid similar bugs
         UI CHANGE TODO:
-        Humans mistype moves. Added isHuma() to bot interface for later timeout
+        - Humans mistype moves. Added isHuma() to bot interface for later timeout
         implementation & disqualification only for bot if move invalid!
+        - Disqualified player should lose the game
         */
         System.out.println("GAME STARTED");
         while (!board.isGameOver()) {
@@ -41,7 +41,7 @@ public class UI {
             System.out.println(boardToString(board));
             System.out.println("turn: " + colorToMark(colors[turn-1]));
             if (board.hasValidMovesLeft(turn)) {
-                int[] move = contestants[turn-1].makeMove(board);
+                int[] move = contestants[turn-1].makeMove(board.getAsArray());
                 if (!board.addMove(move[0], move[1], colors[turn-1])) {
                     System.out.println("INVALID MOVE - DISQUALIFIED");
                     break;
@@ -69,7 +69,7 @@ public class UI {
       7| | | | | | | | |
       8| | | | | | | | |
      */
-    public static String boardToString(BoardAPI board) {
+    public static String boardToString(Board board) {
         String b = "  a b c d e f g h\n";
         for (int y = 0; y < SIZE; y++) {
             b += y + 1;

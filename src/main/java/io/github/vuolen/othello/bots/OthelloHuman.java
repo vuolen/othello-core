@@ -1,6 +1,5 @@
 package io.github.vuolen.othello.bots;
 
-import io.github.vuolen.othello.api.BoardAPI;
 import io.github.vuolen.othello.api.OthelloBot;
 import static io.github.vuolen.othello.api.Tile.*;
 import java.util.Scanner;
@@ -24,7 +23,7 @@ public class OthelloHuman implements OthelloBot {
     }
 
     @Override
-    public int[] makeMove(BoardAPI board) {
+    public int[] makeMove(int[][] board) {
         while (true) {
             System.out.println("Insert move (format: a1): ");
             String move = scanner.nextLine();
