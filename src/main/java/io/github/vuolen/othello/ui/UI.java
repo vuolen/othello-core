@@ -21,6 +21,8 @@ public class UI {
     public static void battle(OthelloBot bot1, OthelloBot bot2) {
         Board board = new Board();
         int turn = 1;
+        int winner = 0;
+        
         OthelloBot[] contestants = new OthelloBot[]{bot1, bot2};
         int[] colors = new int[]{BLACK, WHITE};
         bot1.startGame(colors[0]);
@@ -31,7 +33,7 @@ public class UI {
         line w hasValidMovesLeft called with param 0 for black, 1 for white,
         ui turns changed to 1/2 like in board to avoid similar bugs
         UI CHANGE TODO:
-        - Humans mistype moves. Added isHuma() to bot interface for later timeout
+        - Humans mistype moves. Added isHuman() to bot interface for later timeout
         implementation & disqualification only for bot if move invalid!
         - Disqualified player should lose the game
         */
@@ -40,21 +42,36 @@ public class UI {
             System.out.println("-------------------------------");
             System.out.println(boardToString(board));
             System.out.println("turn: " + colorToMark(colors[turn-1]));
+            
+            int opponent = turn == 1 ? 2 : 1;
+            
             if (board.hasValidMovesLeft(turn)) {
                 int[] move = contestants[turn-1].makeMove(board.getAsArray());
-                if (!board.addMove(move[0], move[1], colors[turn-1])) {
+                
+                boolean moveValid = board.addMove(move[0], move[1], colors[turn-1]);
+                if (!moveValid && !contestants[turn-1].isHuman()) {
                     System.out.println("INVALID MOVE - DISQUALIFIED");
+                    winner = opponent;
                     break;
+                } else if (!moveValid && contestants[turn-1].isHuman()) {
+                    System.out.println("Invalid move, please try again");
+                    continue;
                 }
             } else {
                 System.out.println("No possible moves");
             }
-
-            int opponent = turn == 1 ? 2 : 1;
+            
             turn = opponent;
         }
         System.out.println("GAME OVER");
-        System.out.println("WINNER: " + colorToMark(board.winner()));
+        System.out.print("WINNER: ");
+        
+        if(winner == 0){
+            System.out.println(colorToMark(board.winner()));
+        } else {
+            System.out.println(winner);
+        }
+        
 
     }
 
