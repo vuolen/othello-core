@@ -18,11 +18,33 @@ import static io.github.vuolen.othello.domain.Board.SIZE;
  */
 public class UI {
 
-    public static void battle(OthelloBot bot1, OthelloBot bot2) {
+    public static void tournament(OthelloBot bot1, OthelloBot bot2, int numberOfGames) {
+        System.out.println("Executing tournament of " + numberOfGames + " games...");
+
+        int winsBot1 = 0;
+        int winsBot2 = 0;
+
+        int i = 0;
+        while (i < numberOfGames) {
+            int winner = battle(bot1, bot2, false);
+            if (winner == 1) {
+                winsBot1++;
+            } else if (winner == 2) {
+                winsBot2++;
+            }
+            i++;
+        }
+
+        System.out.println("Tournament over, results:");
+        System.out.println("Player 1: " + winsBot1 + " wins");
+        System.out.println("Player 2: " + winsBot2 + " wins");
+    }
+
+    public static int battle(OthelloBot bot1, OthelloBot bot2, boolean printsOn) {
         Board board = new Board();
         int turn = 1;
         int winner = 0;
-        
+
         OthelloBot[] contestants = new OthelloBot[]{bot1, bot2};
         int[] colors = new int[]{BLACK, WHITE};
         bot1.startGame(colors[0]);
@@ -36,43 +58,51 @@ public class UI {
         - Humans mistype moves. Added isHuman() to bot interface for later timeout
         implementation & disqualification only for bot if move invalid!
         - Disqualified player should lose the game
-        */
-        System.out.println("GAME STARTED");
+         */
+        print("GAME STARTED", printsOn);
         while (!board.isGameOver()) {
-            System.out.println("-------------------------------");
-            System.out.println(boardToString(board));
-            System.out.println("turn: " + colorToMark(colors[turn-1]));
-            
+            print("-------------------------------", printsOn);
+            print(boardToString(board), printsOn);
+            print("turn: " + colorToMark(colors[turn - 1]), printsOn);
+
             int opponent = turn == 1 ? 2 : 1;
-            
+
             if (board.hasValidMovesLeft(turn)) {
-                int[] move = contestants[turn-1].makeMove(board.getAsArray());
-                
-                boolean moveValid = board.addMove(move[0], move[1], colors[turn-1]);
-                if (!moveValid && !contestants[turn-1].isHuman()) {
-                    System.out.println("INVALID MOVE - DISQUALIFIED");
+                int[] move = contestants[turn - 1].makeMove(board.getAsArray());
+
+                boolean moveValid = board.addMove(move[0], move[1], colors[turn - 1]);
+                if (!moveValid && !contestants[turn - 1].isHuman()) {
+                    print("INVALID MOVE - DISQUALIFIED", printsOn);
                     winner = opponent;
                     break;
-                } else if (!moveValid && contestants[turn-1].isHuman()) {
-                    System.out.println("Invalid move, please try again");
+                } else if (!moveValid && contestants[turn - 1].isHuman()) {
+                    print("Invalid move, please try again", printsOn);
                     continue;
                 }
             } else {
-                System.out.println("No possible moves");
+                print("No possible moves", printsOn);
             }
-            
+
             turn = opponent;
         }
-        System.out.println("GAME OVER");
-        System.out.print("WINNER: ");
-        
-        if(winner == 0){
-            System.out.println(colorToMark(board.winner()));
-        } else {
-            System.out.println(winner);
-        }
-        
 
+        print("GAME OVER", printsOn);
+        print("WINNER: ", printsOn);
+
+        if (winner == 0) {
+            winner = board.winner();
+            print(colorToMark(winner), printsOn);
+            return winner;
+        } else {
+            print("" + winner, printsOn);
+            return winner;
+        }
+    }
+
+    public static void print(String stringToPrint, boolean printsEnabled) {
+        if (printsEnabled) {
+            System.out.println(stringToPrint);
+        }
     }
 
     /* String representation of board, white unicode U+25CF

@@ -13,17 +13,8 @@ Each call to your bot has a *one second timeout*, failing to meet this limit aut
 ### void startGame(int color)
 Called at the start of the game, use this method to initialize your bot. The passed argument is either `OthelloBot.BLACK` or `OthelloBot.WHITE` and indicates which discs are yours.
 
-### int[] makeMove(BoardAPI board)
-Called each time it's your bot's turn to make a move. The return value is simply a two-element array containing the indices of the tile where you want to position your next piece. Please note that returning a move that is not valid results in your bot being disqualified.
-
-#### BoardAPI
-
-##### int getTile(int x, int y)
-The possible return values are `OthelloBot.EMPTY`, `OthelloBot.PLAYER`, `OthelloBot.OPPONENT`.
-Uses euclidean coordinate system, x is horizontal, y is vertical.
-
-##### int size()
-Returns the dimension of the board (the length of the side of the square)
+### int[] makeMove(int[][] board)
+Called each time it's your bot's turn to make a move. Board is represented as an 8x8 integer array. The return value is simply a two-element array containing the indices of the tile where you want to position your next piece. Please note that returning a move that is not valid results in your bot being disqualified.
 
 ## Creating your own bot / workflow
 
@@ -34,10 +25,12 @@ Returns the dimension of the board (the length of the side of the square)
 
 ## CLI / How to run
 
-`java -jar <path-to-jar> [Bot1ClassName [Bot2ClassName]]`
+`java -jar <path-to-jar> [Bot1ClassName [Bot2ClassName [numberOfGames]]]`
 
 If you specify no bots, the program will run in human vs. human mode.
 
 If you only specify one, you will play against that bot.
 
-If you specify two bots, the program will play these bots against eachother. // TODO
+If you specify two bots, the program will play these bots against each other.
+
+If you specify two bots and a number, the program will execute a tournament of specified count of games. Tournaments can only be played between two bots and will only display results of the entire tournament.
