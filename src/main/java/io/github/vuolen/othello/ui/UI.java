@@ -50,15 +50,6 @@ public class UI {
         bot1.startGame(colors[0]);
         bot2.startGame(colors[1]);
 
-        /*
-        UI BUGFIX:
-        line w hasValidMovesLeft called with param 0 for black, 1 for white,
-        ui turns changed to 1/2 like in board to avoid similar bugs
-        UI CHANGE TODO:
-        - Humans mistype moves. Added isHuman() to bot interface for later timeout
-        implementation & disqualification only for bot if move invalid!
-        - Disqualified player should lose the game
-         */
         print("GAME STARTED", printsOn);
         while (!board.isGameOver()) {
             print("-------------------------------", printsOn);
@@ -67,7 +58,7 @@ public class UI {
 
             int opponent = turn == 0 ? 1 : 0;
 
-            if (board.hasValidMovesLeft(turn)) {
+            if (board.hasValidMovesLeft(colors[turn])) {
                 int[] move = contestants[turn].makeMove(board.getAsArray());
 
                 boolean moveValid = board.addMove(move[0], move[1], colors[turn]);
@@ -85,6 +76,9 @@ public class UI {
 
             turn = opponent;
         }
+        
+        print("-------------------------------", printsOn);
+        print(boardToString(board), printsOn);
 
         print("GAME OVER", printsOn);
         int winnerColor = board.winner();
