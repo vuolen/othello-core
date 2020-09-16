@@ -11,6 +11,15 @@ import static io.github.vuolen.othello.api.Tile.BLACK;
 import static io.github.vuolen.othello.api.Tile.WHITE;
 import io.github.vuolen.othello.domain.Board;
 import static io.github.vuolen.othello.domain.Board.SIZE;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -59,7 +68,18 @@ public class UI {
             int opponent = turn == 0 ? 1 : 0;
 
             if (board.hasValidMovesLeft(colors[turn])) {
-                int[] move = contestants[turn].makeMove(board.getAsArray());
+                int[] move;
+                if (contestants[turn].isHuman()) {
+                    move = contestants[turn].makeMove(board.getAsArray());
+                } else {
+                    move = makeMoveWithTimeout(contestants[turn], board.getAsArray());
+                }
+                
+                if (move == null) {
+                    print("TIMEOUT - DISQUALIFIED", printsOn);
+                    winner = opponent;
+                    break;
+                }
 
                 boolean moveValid = board.addMove(move[0], move[1], colors[turn]);
                 if (!moveValid && !contestants[turn].isHuman()) {
@@ -90,6 +110,28 @@ public class UI {
         print("WINNER: " + colorToMark(winnerColor), printsOn);
         
         return winner;
+    }
+    
+    public static int[] makeMoveWithTimeout(final OthelloBot bot, final int[][] board) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        
+        final Future<int[]> handler = executor.submit(new Callable() {
+            @Override
+            public int[] call() throws Exception {
+                return bot.makeMove(board);
+            }
+        });
+        
+        
+        try {
+            handler.get(1000, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            handler.cancel(true);
+            e.printStackTrace(System.out);
+            return null;
+        }
+        
+        return bot.makeMove(board);
     }
 
     public static void print(String stringToPrint, boolean printsEnabled) {
