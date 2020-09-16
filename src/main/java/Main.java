@@ -2,6 +2,9 @@
 import io.github.vuolen.othello.api.OthelloBot;
 import io.github.vuolen.othello.bots.OthelloHuman;
 import io.github.vuolen.othello.ui.UI;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,49 +17,41 @@ public class Main {
         if (args.length == 0) {
             UI.battle(new OthelloHuman(), new OthelloHuman(), true);
         } else if (args.length == 1) {
-            try {
-                Class botClass = Class.forName("io.github.vuolen.othello.bots." + args[0]);
-                OthelloBot bot;
-                try {
-                    bot = (OthelloBot) botClass.getDeclaredConstructor().newInstance();
-                    UI.battle(new OthelloHuman(), bot, true);
-                } catch (NoSuchMethodException ex) {
-                    System.out.println("Invalid class " + args[0]);
-                } catch (Exception ex) {
-                    System.out.println("Could not instantiate class " + args[0]);
-                    ex.printStackTrace();
-                }
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Invalid class name " + args[0]);
+            OthelloBot bot = createBotFromClassName("io.github.vuolen.othello.bots." + args[0]);
+            UI.battle(new OthelloHuman(), bot, true);
+        } else if (args.length > 2){
+            OthelloBot bot1 = createBotFromClassName("io.github.vuolen.othello.bots." + args[0]);
+            OthelloBot bot2 = createBotFromClassName("io.github.vuolen.othello.bots." + args[1]);
+            
+            if (bot1 == null || bot2 == null) {
+                System.out.println("Failed to load bots");
+                return;
             }
-        } else if (args.length == 2 || args.length == 3){
-            try {
-                Class botClass1 = Class.forName("io.github.vuolen.othello.bots." + args[0]);
-                OthelloBot bot1;
-                
-                Class botClass2 = Class.forName("io.github.vuolen.othello.bots." + args[1]);
-                OthelloBot bot2;
-                try {
-                    bot1 = (OthelloBot) botClass1.getDeclaredConstructor().newInstance();
-                    bot2 = (OthelloBot) botClass2.getDeclaredConstructor().newInstance();
+            
+            if (args.length == 3) {
+                int numberOfGames = Integer.parseInt(args[2]);
+                UI.tournament(bot1, bot2, numberOfGames);
+            } else {
+                UI.battle(bot1, bot2, true);
+            }
 
-                    if (args.length == 2){
-                        UI.battle(bot1, bot2, true);
-                    } else {
-                        int numberOfGames = Integer.parseInt(args[2]);
-                        UI.tournament(bot1, bot2, numberOfGames);
-                    }
-                    
-                } catch (Exception ex){
-                    System.out.println("Error instantiating; USAGE: java -jar pathto.jar BotClass1 [BotClass2] [numberofgames]: ");
-                    ex.printStackTrace();
-                }
-            } catch(ClassNotFoundException ex) {
-                System.out.println("Exception instantiating classes:");
-                ex.printStackTrace();
-            }
         } else {
-            System.out.println("Invalid arguments; USAGE: java -jar pathto.jar BotClass1 [BotClass2] [numberofgames]");
+            System.out.println("Invalid arguments; USAGE: java -jar pathto.jar BotClass1 [BotClass2] [NumberOfGames]");
         }
-    }   
+    }
+    
+    public static OthelloBot createBotFromClassName(String className) {
+        try {
+            Class botClass = Class.forName(className);
+            OthelloBot bot = (OthelloBot) botClass.getDeclaredConstructor().newInstance();
+            return bot;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("CLASS " + className + " NOT FOUND");
+            return null;
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
+            System.out.println("FAILED TO CREATE INSTANCE FROM BOT CLASS " + className);
+            ex.printStackTrace(System.out);
+            return null;
+        }
+    }
 }
