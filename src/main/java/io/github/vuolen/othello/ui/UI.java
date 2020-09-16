@@ -109,7 +109,7 @@ public class UI {
         }
         print("WINNER: " + colorToMark(winnerColor), printsOn);
         
-        return winner;
+        return colors[winner];
     }
     
     public static int[] makeMoveWithTimeout(final OthelloBot bot, final int[][] board) {
@@ -131,6 +131,8 @@ public class UI {
             e.printStackTrace(System.out);
             return null;
         }
+        
+        executor.shutdown();
         
         return move;
     }
