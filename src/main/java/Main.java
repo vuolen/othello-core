@@ -19,7 +19,7 @@ public class Main {
         } else if (args.length == 1) {
             OthelloBot bot = createBotFromClassName("io.github.vuolen.othello.bots." + args[0]);
             UI.battle(new OthelloHuman(), bot, true);
-        } else if (args.length > 2){
+        } else if (args.length >= 2){
             OthelloBot bot1 = createBotFromClassName("io.github.vuolen.othello.bots." + args[0]);
             OthelloBot bot2 = createBotFromClassName("io.github.vuolen.othello.bots." + args[1]);
             
