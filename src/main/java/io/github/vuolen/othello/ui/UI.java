@@ -122,16 +122,17 @@ public class UI {
             }
         });
         
+        int[] move;
         
         try {
-            handler.get(1000, TimeUnit.MILLISECONDS);
+            move = handler.get(1000, TimeUnit.MILLISECONDS);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             handler.cancel(true);
             e.printStackTrace(System.out);
             return null;
         }
         
-        return bot.makeMove(board);
+        return move;
     }
 
     public static void print(String stringToPrint, boolean printsEnabled) {
