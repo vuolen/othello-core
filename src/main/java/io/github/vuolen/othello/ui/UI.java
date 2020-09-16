@@ -6,7 +6,7 @@
 package io.github.vuolen.othello.ui;
 
 import io.github.vuolen.othello.api.OthelloBot;
-import static io.github.vuolen.othello.api.OthelloBot.EMPTY;
+import static io.github.vuolen.othello.api.Tile.EMPTY;
 import static io.github.vuolen.othello.api.Tile.BLACK;
 import static io.github.vuolen.othello.api.Tile.WHITE;
 import io.github.vuolen.othello.domain.Board;
