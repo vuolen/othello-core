@@ -125,10 +125,10 @@ public class UI {
         try {
             move = handler.get(1000, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            return null;
+            move =  null;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace(System.out);
-            return null;
+            move = null;
         }
 
         handler.cancel(true);
