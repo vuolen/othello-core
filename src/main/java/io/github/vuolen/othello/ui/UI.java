@@ -18,8 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -74,7 +72,7 @@ public class UI {
                 } else {
                     move = makeMoveWithTimeout(contestants[turn], board.getAsArray());
                 }
-                
+
                 if (move == null) {
                     print("TIMEOUT - DISQUALIFIED", printsOn);
                     winner = opponent;
@@ -96,7 +94,7 @@ public class UI {
 
             turn = opponent;
         }
-        
+
         print("-------------------------------", printsOn);
         print(boardToString(board), printsOn);
 
@@ -105,35 +103,37 @@ public class UI {
         if (winnerColor == EMPTY) {
             System.out.println("THE GAME IS A TIE");
         } else {
-            
+
         }
         print("WINNER: " + colorToMark(winnerColor), printsOn);
-        
+
         return colors[winner];
     }
-    
+
     public static int[] makeMoveWithTimeout(final OthelloBot bot, final int[][] board) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        
+
         final Future<int[]> handler = executor.submit(new Callable() {
             @Override
             public int[] call() throws Exception {
                 return bot.makeMove(board);
             }
         });
-        
+
         int[] move;
-        
+
         try {
             move = handler.get(1000, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException | InterruptedException | ExecutionException e) {
-            handler.cancel(true);
+        } catch (TimeoutException e) {
+            return null;
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace(System.out);
             return null;
         }
-        
+
+        handler.cancel(true);
         executor.shutdown();
-        
+
         return move;
     }
 
